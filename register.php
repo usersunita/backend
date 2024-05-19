@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept");
 header("Content-Type: application/json");
@@ -23,7 +23,7 @@ if ($conn->connect_error) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["formType"])) {
     $stmt = $conn->prepare(
-        "INSERT INTO `users` (firstName, lastName, email, password, phonenumber, qualification, experience, photo, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO `register` (firstName, lastName, email, password, phonenumber, qualification, experience, photo, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
     if ($stmt) {

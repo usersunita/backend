@@ -25,7 +25,7 @@ if (isset($data['email']) && isset($data['password'])) {
     $email = $data['email'];
     $password = $data['password'];
 
-    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND password = ?");
+    $stmt = $conn->prepare("SELECT id FROM  register WHERE email = ? AND password = ?");
     $stmt->bind_param("ss", $email, $password);
     $stmt->execute();
     $stmt->bind_result($user_id);
