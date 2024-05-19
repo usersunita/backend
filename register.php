@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-header("Access-Control-Allow-Origin: http://localhost:3001");
+header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept");
 header("Content-Type: application/json");
@@ -23,12 +23,12 @@ if ($conn->connect_error) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["formType"])) {
     $stmt = $conn->prepare(
-        "INSERT INTO `register` (firstName, lastName, email, password, phonenumber, qualification, experience, photo, role, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO `users` (firstName, lastName, email, password, phonenumber, qualification, experience, photo, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
     if ($stmt) {
         $stmt->bind_param(
-            "sssssssssi",
+            "sssssssss",
             $firstName,
             $lastName,
             $email,
@@ -37,8 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["formType"])) {
             $qualification,
             $experience,
             $photo_path,
-            $role,
-            $user_id
+            $role
         );
 
         $firstName = $_POST["firstName"];
@@ -53,6 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["formType"])) {
         $photo_path = null;
         if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] === UPLOAD_ERR_OK) {
             $target_dir = "uploads/";
+            if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+            }
+            
             $target_file = $target_dir . basename($_FILES["photo"]["name"]);
             if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
                 $photo_path = $target_file;
@@ -60,7 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["formType"])) {
         }
 
         $role = $_POST["formType"] === "Guide" ? "guide" : "client";
-        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
         if ($stmt->execute()) {
             echo json_encode([
