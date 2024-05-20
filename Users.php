@@ -7,15 +7,12 @@ $username = "root";
 $password = "";
 $database = "project";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $database);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch users
 $sqlUsers = "SELECT * FROM register";
 $resultUsers = $conn->query($sqlUsers);
 
@@ -25,11 +22,7 @@ if ($resultUsers->num_rows > 0) {
         $users[] = $row;
     }
 }
-
-// Output users data as JSON
 echo json_encode($users);
-
-// Handle delete action
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
     $id = $_GET['id'];
     $sqlDelete = "DELETE FROM register WHERE id=$id";
@@ -39,8 +32,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         echo json_encode(["success" => false, "message" => "Error deleting booking: " . $conn->error]);
     }
 }
-
-// Close connection
 $conn->close();
 ?>
 

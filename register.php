@@ -23,7 +23,7 @@ if ($conn->connect_error) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["formType"])) {
     $stmt = $conn->prepare(
-        "INSERT INTO `register` (firstName, lastName, email, password, phonenumber, qualification, experience, photo, role, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO `register` (firstName, lastName, email, password, phonenumber, qualification, experience, photo, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
     if ($stmt) {
@@ -53,9 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["formType"])) {
         if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] === UPLOAD_ERR_OK) {
             $target_dir = "uploads/";
             if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0777, true);
+                mkdir($target_dir, 0777, true);
             }
-            
+
             $target_file = $target_dir . basename($_FILES["photo"]["name"]);
             if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
                 $photo_path = $target_file;
