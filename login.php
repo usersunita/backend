@@ -25,13 +25,13 @@ if (isset($data['email']) && isset($data['password'])) {
     $email = $data['email'];
     $password = $data['password'];
 
-    $stmt = $conn->prepare("SELECT id FROM  register WHERE email = ? AND password = ?");
+    $stmt = $conn->prepare("SELECT id, role FROM  register WHERE email = ? AND password = ?");
     $stmt->bind_param("ss", $email, $password);
     $stmt->execute();
-    $stmt->bind_result($user_id);
+    $stmt->bind_result($user_id, $role);
     if ($stmt->fetch()) {
         $_SESSION['user_id'] = $user_id;
-        echo json_encode(["message" => "Login successful"]);
+        echo json_encode(["message" => "Login successful", "role" => $role]);
     } else {
         echo json_encode(["message" => "Invalid credentials"]);
     }

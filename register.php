@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-header("Access-Control-Allow-Origin: http://localhost:3001");
+header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept");
 header("Content-Type: application/json");
@@ -51,12 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["formType"])) {
         // Handle photo upload
         $photo_path = null;
         if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] === UPLOAD_ERR_OK) {
-            $target_dir = "uploads/";
+            $target_dir = "/uploads/";
             if (!is_dir($target_dir)) {
                 mkdir($target_dir, 0777, true);
             }
 
-            $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+            $target_file = dirname(__FILE__) . $target_dir . basename($_FILES["photo"]["name"]);
             if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
                 $photo_path = $target_file;
             }
