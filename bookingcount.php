@@ -20,14 +20,14 @@ if ($conn->connect_error) {
     ]));
 }
 
-// Query to count the number of records in the guide table
+// Query to count the number of records in the booking table
 $sql = "SELECT COUNT(id) AS booking_count FROM booking";
 
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $guideCount = $row["booking_count"];
+    $bookingCount = $row["booking_count"];
     
     echo json_encode([
         "success" => true,
@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
 } else {
     echo json_encode([
         "success" => false,
-        "message" => "No booking found"
+        "message" => "No bookings found"
     ]);
 }
 
