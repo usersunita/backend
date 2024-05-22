@@ -21,11 +21,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $languages = $conn->real_escape_string($_POST['languages']);
     $skills = $conn->real_escape_string($_POST['skills']);
 
-    $image = $_FILES['image'];
-    $imagePath = '';
-    if ($image['error'] == UPLOAD_ERR_OK) {
-        $imagePath = 'uploads/' . basename($image['name']);
-        move_uploaded_file($image['tmp_name'], $imagePath);
+    // $image = $_FILES['image'];
+    // $imagePath = '';
+    // if ($image['error'] == UPLOAD_ERR_OK) {
+    //     $imagePath = 'uploads/' . basename($image['name']);
+    //     move_uploaded_file($image['tmp_name'], $imagePath);
+    // }
+    if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
+        $target_dir = "/uploads/";
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        $target_file = dirname(__FILE__) . $target_dir . basename($_FILES["image"]["name"]);
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            $imagePath = $target_file;
+        }
     }
 
     $sql = "INSERT INTO upload (name, dailyRate, languages, image_path, skills)
