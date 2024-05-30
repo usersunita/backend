@@ -11,7 +11,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT guide_id, AVG(rating) as average_rating, COUNT(*) as reviews_count FROM feedback GROUP BY guide_id";
+$sql = "SELECT guide_id, AVG(rating) as average_rating, COUNT(*) as reviews_count FROM review GROUP BY guide_id";
 $result = $conn->query($sql);
 
 $feedbackData = array();
