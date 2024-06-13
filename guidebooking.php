@@ -102,26 +102,8 @@ header("Content-Type: application/json");
 // Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Decode the JSON data from the request body
-    $data = json_decode(file_get_contents("php://input"));
+    $data = json_decode(file_get_contents("php://input"), true);
 
-    // Check if all required fields are present
-    $required_fields = ['client_id', 'guide_id', 'date', 'time', 'days', 'destination', 'person', 'type', 'status', 'message'];
-    $missing_fields = [];
-    foreach ($required_fields as $field) {
-        if (!isset($data->$field)) {
-            $missing_fields[] = $field;
-        }
-    }
-
-    // If any required field is missing, return an error
-    if (!empty($missing_fields)) {
-        $response = array(
-            "error" => "Missing required fields",
-            "missing_fields" => $missing_fields
-        );
-        echo json_encode($response);
-        exit();
-    }
 
     // Connect to the database
     $servername = "localhost";
@@ -143,7 +125,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
-    $stmt->bind_param("iissisisss", $data->client_id, $data->guide_id, $data->date, $data->time, $data->days, $data->destination, $data->person, $data->type, $data->status, $data->message);
+    $guide_id = intval($data['guide_id']);
+    $client_id = intval($data['client_id']);
+    $days = intval($data['days']);
+    $person = intval($data['person']);
+    $date=$data['date'];
+    $time=$data['time'];
+    $destination=$data['destination'];
+    $type=$data['type'];
+    $status=$data['status'];
+    $message=$data['message'];
+
+    $stmt->bind_param("iissisisss", $client_id, $guide_id, $date, $time, $days, $destination, $person, $type, $status, $message);
 
     // Execute the SQL statement
     if ($stmt->execute()) {
