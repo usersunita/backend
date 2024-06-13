@@ -13,7 +13,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle delete request
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
     $id = $_GET['id'];
     $sql = "DELETE FROM booking WHERE id=$id";
@@ -24,11 +23,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     }
     exit; 
 }
-
-// Handle accept request
 if (isset($_GET['action']) && $_GET['action'] === 'accept' && isset($_GET['id'])) {
     $id = $_GET['id'];
-    // Update the status of the booking to "Accepted" in the database
     $sql = "UPDATE booking SET status='Accepted' WHERE id=$id";
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["success" => true, "message" => "Booking with ID $id accepted successfully"]);
@@ -37,8 +33,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'accept' && isset($_GET['id'])
     }
     exit;
 }
-
-// Fetch bookings
 $sql = "SELECT * FROM booking";
 $result = $conn->query($sql);
 
@@ -53,3 +47,4 @@ echo json_encode($bookings);
 
 $conn->close();
 ?>
+
