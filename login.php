@@ -120,7 +120,7 @@ if (isset($data['email']) && isset($data['password'])) {
     $stmt->bind_param("ss", $email, $password);
     $stmt->execute();
     $stmt->bind_result($user_id, $role);
-    if ($stmt->fetch()) {
+    if ($stmt->fetch()) { 
         $_SESSION['guide_id'] = $user_id;  // Store guide_id in session
         echo json_encode(["message" => "Login successful", "role" => $role, "user_id" => $user_id]);
     } else {
