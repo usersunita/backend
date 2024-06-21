@@ -19,13 +19,13 @@ if ($conn->connect_error) {
 }
 
 // Check if guide_id is set in session
-if (!isset($_SESSION['guide_id'])) {
+if (!isset($_GET['userId'])) {
     echo json_encode(['error' => 'User is not logged in']);
     $conn->close();
     exit();
 }
 
-$user_id = intval($_SESSION['guide_id']); // Ensure it's an integer for security
+$user_id = intval($_GET['userId']); // Ensure it's an integer for security
 
 $sql = "SELECT r.*
         FROM review r

@@ -17,9 +17,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
+$user_id = isset($_GET['userId']) ? intval($_GET['userId']) : '';
 
-if (!$userId) {
+if (!$user_id) {
     echo json_encode(['error' => 'User is not logged in']);
     $conn->close();
     exit();
@@ -29,7 +29,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 if ($action === 'delete' && isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "DELETE FROM booking WHERE id=$id AND client_id=$userId";
+    $sql = "DELETE FROM booking WHERE id=$id AND client_id=$user_id";
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["success" => true, "message" => "Booking with ID $id deleted successfully"]);
     } else {
@@ -41,7 +41,7 @@ if ($action === 'delete' && isset($_GET['id'])) {
 
 if ($action === 'accept' && isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "UPDATE booking SET status='Accepted' WHERE id=$id AND client_id=$userId";
+    $sql = "UPDATE booking SET status='Accepted' WHERE id=$id AND client_id=$user_id";
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["success" => true, "message" => "Booking with ID $id accepted successfully"]);
     } else {
@@ -51,8 +51,11 @@ if ($action === 'accept' && isset($_GET['id'])) {
     exit();
 }
 
-$sql = "SELECT * FROM booking WHERE guide_id=$user_id";
-$result = $conn->query($sql);
+$sql = "SELECT b.* FROM booking b JOIN upload u ON b.guide_id = u.id WHERE u.user_id = ?;";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 $booking = [];
 if ($result->num_rows > 0) {
