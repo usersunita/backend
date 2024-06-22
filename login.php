@@ -121,7 +121,7 @@ if (isset($data['email']) && isset($data['password'])) {
     $stmt->execute();
     $stmt->bind_result($user_id, $role);
     if ($stmt->fetch()) { 
-        $_SESSION['guide_id'] = $user_id;  // Store guide_id in session
+        $_SESSION['guide_id'] = $user_id;
         echo json_encode(["message" => "Login successful", "role" => $role, "user_id" => $user_id]);
     } else {
         echo json_encode(["message" => "Invalid credentials"]);

@@ -9,18 +9,14 @@ $username = "root";
 $password = "";
 $dbname = "project";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die(json_encode([
         "success" => false,
         "message" => "Connection failed: " . $conn->connect_error
     ]));
 }
-
-// Query to count the number of records in the guide table
 $sql = "SELECT COUNT(id) AS user_count FROM register";
 
 $result = $conn->query($sql);

@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000"); // Update to match your frontend's origin
+header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
@@ -18,14 +18,13 @@ if ($conn->connect_error) {
     exit();
 }
 
-// Check if guide_id is set in session
 if (!isset($_GET['userId'])) {
     echo json_encode(['error' => 'User is not logged in']);
     $conn->close();
     exit();
 }
 
-$user_id = intval($_GET['userId']); // Ensure it's an integer for security
+$user_id = intval($_GET['userId']); 
 
 $sql = "SELECT r.*
         FROM review r

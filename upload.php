@@ -4,7 +4,6 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept");
 header("Content-Type: application/json");
 
-// Increase maximum file size for uploads
 ini_set('upload_max_filesize', '10M');
 ini_set('post_max_size', '10M');
 
@@ -43,10 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // Update existing record
+
         $sql = "UPDATE upload SET name='$name', dailyRate='$dailyRate', languages='$languages', image_path='$imagePath', skills='$skills', area='$area' WHERE user_id='$user_id'";
     } else {
-        // Insert new record
+    
         $sql = "INSERT INTO upload (user_id, name, dailyRate, languages, image_path, skills, area)
                 VALUES ('$user_id', '$name', '$dailyRate', '$languages', '$imagePath', '$skills', '$area')";
     }

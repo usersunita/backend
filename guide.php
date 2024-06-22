@@ -52,15 +52,11 @@ $username = "root";
 $password = "";
 $dbname = "project";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
-// Handle DELETE action
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete' && isset($_POST['id'])) {
     $id = $_POST['id'];
     $sqlDelete = "DELETE FROM upload WHERE id = ?";
@@ -77,8 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $conn->close();
     exit();
 }
-
-// Fetch data
 $sql = "SELECT * FROM upload";
 $result = $conn->query($sql);
 

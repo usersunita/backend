@@ -9,10 +9,9 @@ $username = "root";
 $password = "";
 $dbname = "project";
 
-// Create connection
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die(json_encode([
         "success" => false,
@@ -20,7 +19,6 @@ if ($conn->connect_error) {
     ]));
 }
 
-// Query to count the number of records in the guide table
 $sql = "SELECT COUNT(id) AS review_count FROM review";
 
 $result = $conn->query($sql);
