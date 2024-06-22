@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin:* " . $_SERVER['HTTP_ORIGIN']);
+header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']); // Remove the wildcard and space
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
@@ -51,7 +51,7 @@ if ($action === 'accept' && isset($_GET['id'])) {
     exit();
 }
 
-$sql = "SELECT b.* FROM booking b JOIN upload u ON b.guide_id = u.id WHERE u.user_id = ?;";
+$sql = "SELECT b.* FROM booking b JOIN upload u ON b.client_id = u.id WHERE u.user_id = ?;";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
