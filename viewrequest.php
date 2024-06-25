@@ -32,14 +32,14 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$booking = [];
+$views = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $booking[] = $row;
+        $views[] = $row;
     }
 }
 
-echo json_encode($booking);
+echo json_encode($views);
 
 $conn->close();
 ?>
