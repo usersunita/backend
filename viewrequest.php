@@ -18,7 +18,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : '';
+$user_id = isset($_GET['userId']) ? intval($_GET['userId']) : '';
 
 if (!$user_id) {
     echo json_encode(['error' => 'User is not logged in']);
